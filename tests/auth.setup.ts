@@ -1,0 +1,25 @@
+import { test as setup, expect } from '@playwright/test';
+import path from 'path';
+
+const authFile = path.join(__dirname, '../playwright/.auth/user.json');
+
+setup('authenticate', async ({ page }) => {
+  // ไปที่หน้า Login
+  await page.goto(process.env.TARGET_URL || 'https://sts-frontend-gold.vercel.app/login');
+
+  // กรอก Username และ Password
+  await page.locator('#username').fill('newnew');
+  await page.locator('#password').fill('11111111');
+  
+  // กดปุ่มเข้าสู่ระบบ
+  await page.getByRole('button', { name: 'เข้าสู่ระบบ', exact: true }).click();
+
+  // รอจนกว่าเว็บโหลดเสร็จแล้ว header จะเห็น ระบบติดตามผู้เรียน
+  await page.waitForURL('https://sts-frontend-gold.vercel.app');
+
+  // หน้านั้นมีคำว่า แผนที่นักเรียนเสี่ยงรายจังหวัด
+  await page.getByText('แผนที่นักเรียนเสี่ยงรายจังหวัด').waitFor();
+
+  // บันทึก State ของ Browser (Cookies, LocalStorage ฯลฯ)
+  await page.context().storageState({ path: authFile });
+});
