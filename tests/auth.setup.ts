@@ -5,17 +5,17 @@ const authFile = path.join(__dirname, '../playwright/.auth/user.json');
 
 setup('authenticate', async ({ page }) => {
   // ไปที่หน้า Login
-  await page.goto(process.env.TARGET_URL || 'https://sts-frontend-gold.vercel.app/login');
+  await page.goto(process.env.TARGET_URL as string);
 
   // กรอก Username และ Password
-  await page.locator('#username').fill('newnew');
-  await page.locator('#password').fill('11111111');
-  
+  await page.locator('#username').fill(process.env.ADMIN_USERNAME as string);
+  await page.locator('#password').fill(process.env.ADMIN_PASSWORD as string);
+
   // กดปุ่มเข้าสู่ระบบ
   await page.getByRole('button', { name: 'เข้าสู่ระบบ', exact: true }).click();
 
   // รอจนกว่าเว็บโหลดเสร็จแล้ว header จะเห็น ระบบติดตามผู้เรียน
-  await page.waitForURL('https://sts-frontend-gold.vercel.app');
+  await page.waitForURL(process.env.TARGET_URL as string);
 
   // หน้านั้นมีคำว่า แผนที่นักเรียนเสี่ยงรายจังหวัด
   await page.getByText('แผนที่นักเรียนเสี่ยงรายจังหวัด').waitFor();
