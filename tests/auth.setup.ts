@@ -4,6 +4,13 @@ import path from 'path';
 const authFile = path.join(__dirname, '../playwright/.auth/user.json');
 
 setup('authenticate', async ({ page }) => {
+  const fs = require('fs');
+  // หากมีไฟล์ auth แล้ว ให้ข้ามการ login เพื่อลดเวลา
+  if (fs.existsSync(authFile)) {
+    console.log('Skipping authentication as auth file already exists.');
+    return;
+  }
+
   // ไปที่หน้า Login
   await page.goto(process.env.TARGET_URL as string);
 

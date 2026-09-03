@@ -3,8 +3,8 @@ import { test, expect } from '@playwright/test';
 test.describe('Test Scenario ตรวจสอบการกรอกข้อมูล : TS-STS-08-01', () => {
 
   test('TC-STS-08-01-04: ตรวจสอบว่าเมื่อเลือกวันที่จาก Date Picker "จากวันที่" ระบบกรองประวัติการนำเข้าตามช่วงวันที่ได้ถูกต้อง', async ({ page }) => {
-    // ไปที่หน้า นำเข้าข้อมูล (แก้ไขจาก process.env.TARGET_URL เป็น URL ที่กำหนด)
-    await page.goto('https://sts-frontend-gold.vercel.app/import-data');
+    // ไปที่หน้า นำเข้าข้อมูล
+    await page.goto(process.env.TARGET_URL + '/import-data');
     // รอจนกว่าหน้าเว็บโหลดเสร็จ
     await page.waitForLoadState('networkidle');
 
